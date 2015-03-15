@@ -1,0 +1,21 @@
+function [ edges ] = EdgeDetector( Image, Params )
+%EDGEDETECTOR Function to locate edges in image
+%   defined in attestation requirements
+
+% convert image to double type
+Image = double(Image);
+
+% define filter
+DX = [ ...
+    -1 0 1;
+    -2 0 2;
+    -1 0 1];
+DY = DX';
+
+% apply filter
+ImageDx = imfilter(Image, DX);
+ImageDy = imfilter(Image, DY);
+
+edges = 
+
+end
