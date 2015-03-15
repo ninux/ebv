@@ -1,21 +1,49 @@
-function [ edges ] = EdgeDetector( Image, Params )
+function result = EdgeDetector(Image, Params)
 %EDGEDETECTOR Function to locate edges in image
 %   defined in attestation requirements
 
-% convert image to double type
-Image = double(Image);
-
-% define filter
-DX = [ ...
-    -1 0 1;
-    -2 0 2;
-    -1 0 1];
-DY = DX';
+% choose filter
+if Params.FilterType == 'Sobel'
+    DX = fspecial('sobel')';
+    % DX = [1 2 1]'*[-1 0 1];
+    DY = DX';
+else if Params.FilterType == 'Prewitt'
+    DX = fspecial('prewitt')';
+    % DX = [1 1 1]'*[-1 0 1];
+    DY = DX';
+    else
+end
 
 % apply filter
 ImageDx = imfilter(Image, DX);
 ImageDy = imfilter(Image, DY);
 
-edges = 
+% calculate the quadratic values & the product of the partial devivatives
+ImageDx2 = ImageDx.^2;
+ImageDy2 = ImageDy.^2;
+ImageDxDy = ImageDx.^ImageDy;
+
+% filter the results with a guassian filter
+h1 = fspecial('gaussian', 6*Params.Sigma, 6*Params.Sigma);
+ImageDx2Filt = imfilter(ImageDx2, h1, 'symmetric');
+ImageDy2Filt = imfilter(ImageDy2, h1, 'symmetric');
+ImageDxDyFilt = imfilter(ImageDxDy, h1, 'symmetric');
+
+% calculate the EdgeFactor for each pixel
+Mc = (ImageDx2Filt.*ImageDy2Filt) - (ImageDxDyFilt.^2) ...
+    - Params.k.*(ImageDx2Filt + ImageDy2Filt).^2;
+
+% set border to zero
+% ??? -> see attestation requirement 6
+
+% apply maximum region filtering
+%MFmax = ordfilt2(Mc, median(((Params.Border).^2)), ones(Params.Border));
+MFmax = ordfilt2(Mc, 1, ones(Params.Border));
+
+% locate the local maxima 
+LOCmax = (Mc == MFmax);
+
+% declare the result
+result = LOCmax;
 
 end
