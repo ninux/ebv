@@ -1,2 +1,5 @@
 # ignore ILIAS data
 /ilias/*
+
+# ignore leanx stuff
+/leanx/*
