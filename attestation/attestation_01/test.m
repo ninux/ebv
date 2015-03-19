@@ -8,7 +8,7 @@ Params.FilterType = 'Sobel';
 Params.Sigma = 2;
 Params.k = 0.04;
 Params.Border = 6;
-Params.nBest = 10;
+Params.nBest = 100;
 
 % run edge detector function
 result = EdgeDetector(Image, Params);
