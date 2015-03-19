@@ -3,3 +3,6 @@
 
 # ignore leanx stuff
 /leanx/*
+
+# ignore ASV
+*.asv
