@@ -119,3 +119,16 @@ se1 = strel('square',11);   % 11-by-11 square
 se2 = strel('line',10,45);  % line, length 10, angle 45 degrees
 se3 = strel('disk',15);     % disk, radius 15
 se4 = strel('ball',15,5);   % ball, radius 15, height 5
+
+%%%%%%%%%
+
+%do region labeling
+% see: http://ch.mathworks.com/help/images/ref/regionprops.html?searchHighlight=regionprops 
+    Prop = regionprops(ImageClose,'Area','Centroid', 'BoundingBox');
+    Prop = regionprops(ImageClose,'Area','Centroid', 'BoundingBox');
+
+    
+%%%%%%%%%%
+
+% write variable in plot title
+title(strcat(num2str(numel(Prop)), ' Elements found'));
