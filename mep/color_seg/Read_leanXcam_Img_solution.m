@@ -56,9 +56,9 @@ MinArea = 10;
         Blue = Image(:,:,3);
         
         % filter small noise with median filter
-        Red_filt =  ordfilt2(Red, 1, ones(3));
-        Green_filt =  ordfilt2(Green, 1, ones(3));
-        Blue_filt =  ordfilt2(Blue, 1, ones(3));
+        Red_filt =  ordfilt2(Red, 5, ones(3));
+        Green_filt =  ordfilt2(Green, 5, ones(3));
+        Blue_filt =  ordfilt2(Blue, 5, ones(3));
         
         % add noise
         %Red = imnoise(Red, 'salt & pepper', 0.05);
@@ -70,6 +70,8 @@ MinArea = 10;
         for Ind1 = 1:size(FrgCol,1)
             %find the 2D indices of all pixel with distance smaller than LimitVal
             IndexImg = IndexImg | ( (Red-FrgCol(Ind1, 1)).^2+(Green-FrgCol(Ind1, 2)).^2+(Blue-FrgCol(Ind1, 3)).^2 < LimitVal.^2 );
+            IndexImg_red = ( (Red-FrgCol(1, 1)).^2+(Green-FrgCol(1, 2)).^2+(Blue-FrgCol(1, 3)).^2 < LimitVal.^2 );
+            IndexImg_blue = ( (Red-FrgCol(2, 1)).^2+(Green-FrgCol(2, 2)).^2+(Blue-FrgCol(2, 3)).^2 < LimitVal.^2 );
             %do some morphology
         end
     else
