@@ -144,3 +144,24 @@ Y = Cent(2);
 z0 = (X + i*Y) - 3*exp(-i*Ang*pi/180);
 z1 = (X + i*Y) + 3*exp(-i*Ang*pi/180);
 line([real(z0) real(z1)], [imag(z0) imag(z1)], 'LineWidth', 2, 'Color', [1 0 0]);       
+
+
+%%%%%%%%%%
+
+% Hough transformation, calculate the accumulator Hough
+[Hough, Alpha, Rho] = hough(EdgeCanny);
+figure(2)
+imshow(mat2gray(Hough));
+colormap('hot');
+xlabel('Alpha');
+ylabel('Rho')
+title('Hough Accumulator');
+
+% Find at most 5 peaks with threshold 15 and minimim distance of 15, 15
+% pixel
+NumPeaks = 5;
+HoughPeaks = houghpeaks(Hough, NumPeaks, 'Threshold', 15, 'NHoodSize', [15 15]);
+
+% Find the lines that correspond to the peaks; fill gabs of 15 pixel and
+% suppress all (merged lines) that have a length less than 30 pixel
+Lines = houghlines(EdgeCanny, Alpha, Rho, HoughPeaks, 'FillGap', 15, 'MinLength', 30);
