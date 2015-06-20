@@ -132,3 +132,15 @@ se4 = strel('ball',15,5);   % ball, radius 15, height 5
 
 % write variable in plot title
 title(strcat(num2str(numel(Prop)), ' Elements found'));
+
+
+%%%%%%%%%%
+
+% draw angle orientation through object of interest
+Ang = Prop(Ind).Orientation;
+Cent=Prop(Ind).Centroid;
+X = Cent(1);
+Y = Cent(2);
+z0 = (X + i*Y) - 3*exp(-i*Ang*pi/180);
+z1 = (X + i*Y) + 3*exp(-i*Ang*pi/180);
+line([real(z0) real(z1)], [imag(z0) imag(z1)], 'LineWidth', 2, 'Color', [1 0 0]);       
