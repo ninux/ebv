@@ -6,3 +6,6 @@
 
 # ignore ASV
 *.asv
+
+# ignore temporary editor files
+*.swp
