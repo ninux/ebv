@@ -1,0 +1,4 @@
+Calculation:
+	6 + 36 = 42
+
+----- END OF ENTRY
