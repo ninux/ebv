@@ -127,7 +127,7 @@ se4 = strel('ball',15,5);   % ball, radius 15, height 5
 
 %do region labeling
 % see: http://ch.mathworks.com/help/images/ref/regionprops.html
-    Prop = regionprops(ImageClose,  'Area', ... % Area
+    Prop = regionprops(LabelImage,  'Area', ... % Area
                                     'Centroid', ... % Center of mass
                                     'ConvexHull', ... % Convex Hull
                                     'Orientation', ... % angle
