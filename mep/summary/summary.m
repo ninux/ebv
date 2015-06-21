@@ -122,18 +122,19 @@ se4 = strel('ball',15,5);   % ball, radius 15, height 5
 
 %%%%%%%%%
 
+%do labeling (bwlabel uses 8 neighbors by default, bwlabel(ImageClose, 4) for 4 neighbors)
+[LabelImage, NumberLabels] = bwlabel(ImageClose);
+
 %do region labeling
-% see: http://ch.mathworks.com/help/images/ref/regionprops.html?searchHighlight=regionprops 
-    Prop = regionprops(ImageClose,'Area','Centroid', 'BoundingBox');
-    Prop = regionprops(ImageClose,'Area','Centroid', 'BoundingBox');
+% see: http://ch.mathworks.com/help/images/ref/regionprops.html
+    Prop = regionprops(ImageClose,  'Area', ... % Area
+                                    'Centroid', ... % Center of mass
+                                    'ConvexHull', ... % Convex Hull
+                                    'Orientation', ... % angle
+                                    'Perimeter', ... % Perimeter
+                                    'BoundingBox'); % Bounding Box
 
     
-%%%%%%%%%%
-
-% write variable in plot title
-title(strcat(num2str(numel(Prop)), ' Elements found'));
-
-
 %%%%%%%%%%
 
 % draw angle orientation through object of interest
@@ -144,6 +145,31 @@ Y = Cent(2);
 z0 = (X + i*Y) - 3*exp(-i*Ang*pi/180);
 z1 = (X + i*Y) + 3*exp(-i*Ang*pi/180);
 line([real(z0) real(z1)], [imag(z0) imag(z1)], 'LineWidth', 2, 'Color', [1 0 0]);       
+
+% draw convex hull
+ConvH = Prop(Ind).ConvexHull;
+line(ConvH(:,1), ConvH(:,2), 'LineWidth', 2, 'Color', [1 0 0]);
+
+% draw bounding box
+BBox = Prop(Ind).BoundingBox;
+Cent=Prop(Ind).Centroid;
+X = Cent(1);
+Y = Cent(2);
+rectangle('Position', BBox, 'LineWidth', 2, 'EdgeColor',[1 0 0]);
+
+% draw center of mass
+Cent=Prop(Ind).Centroid;
+Area=Prop(Ind).Area;
+X=Cent(1);Y=Cent(2);
+line([X-1 X+1], [Y-1 Y+1], 'LineWidth', 2, 'Color',[1 0 0]);
+line([X+1 X-1], [Y-1 Y+1], 'LineWidth', 2, 'Color',[1 0 0]);
+text(X-1,Y+2, sprintf('cm = [%.1f %.1f]', X, Y), 'BackgroundColor',[.8 .8 .8]);
+
+
+%%%%%%%%%%
+
+% write variable in plot title
+title(strcat(num2str(numel(Prop)), ' Elements found'));
 
 
 %%%%%%%%%%
