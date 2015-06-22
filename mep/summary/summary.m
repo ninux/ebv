@@ -97,7 +97,18 @@ ImageGauss = imfilter(ImageNoise, GaussM);
 
 %%%%%%%%%%
 
-% allpy structure element for dilation
+% apply Otsu's method for finding threshold
+level = graythresh(ImageGauss);
+
+% foreground background separation using comparation
+ImageFG = ImageGauss > level;
+
+% foreground background separation using builtin function
+ImageFG = im2bw(ImageGauss, level);
+
+%%%%%%%%%%
+
+% apply structure element for dilation
 Image_Dilation = imdilate(Image, StructureElement);
 
 % do a dilation 

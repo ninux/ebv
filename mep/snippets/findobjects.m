@@ -14,6 +14,7 @@ ImageFilt = ordfilt2(ImageGS, 5, ones(3));
 % binary
 Threshold = 255*graythresh(ImageFilt);
 ImageBin = ImageFilt > Threshold;
+ImageBin = im2bw(ImageFilt, Threshold);
 
 % canny filter
 ImageCanny = edge(ImageBin, 'canny', [0 0.1], 1);
